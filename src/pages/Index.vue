@@ -7,7 +7,8 @@ import arrow from '../assets/icons8-down-arrow-26.png';
 import {Download, Location, Message, Phone} from "@element-plus/icons-vue"; // 引入箭头图片
 const activeSection = ref('home'); // 当前激活部分
 
-let observer = null;
+let observer: IntersectionObserver | null = null;
+const expandedIndex = ref<number | null>(null); // 示例
 const scrollToAbout = () => {
   const aboutSection = document.getElementById('about');
   if (aboutSection) {
@@ -39,13 +40,17 @@ onMounted(() => {
   );
 
   sections.forEach((section) => {
-    observer.observe(section);
+    if(observer)
+    {
+      observer.observe(section);
+    }
+
   });
 });
-const downloadResume = () => {
-  const url = import('../static/resume.pdf'); // 使用 require 来获取文件路径
+const downloadResume = async () => {
+  const url = await import('../static/resume.pdf'); // 使用 require 来获取文件路径
   const link = document.createElement('a');
-  link.href = url;
+  link.href = url.default;
   link.download = 'resume.pdf'; // 设置下载的文件名
   link.click();
 };
@@ -54,7 +59,7 @@ onBeforeUnmount(() => {
     observer.disconnect();
   }
 });
-const expandedIndex = ref(null);
+
 const customColor = 'orange'; // 自定义颜色
 const skills = ref([
   {
@@ -76,9 +81,10 @@ const skills = ref([
   },
 ]);
 
-const toggle = (index) => {
+const toggle = (index: number) => {
   expandedIndex.value = expandedIndex.value === index ? null : index;
 };
+
 
 
 

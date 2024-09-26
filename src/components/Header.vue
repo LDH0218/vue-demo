@@ -5,7 +5,7 @@ import { ref } from 'vue';
 
 const theme = ref("light");
 const props = defineProps<{
-  activeSection: string;
+  activeSection: string; // 定义 activeSection 的类型
 }>();
 
 const scrollToSection = (id: string) => {
@@ -14,13 +14,7 @@ const scrollToSection = (id: string) => {
     section.scrollIntoView({ behavior: 'smooth' });
   }
 };
-const toggleTheme = () => {
-  if (theme.value === "light") {
-    theme.value = "dark";
-  } else {
-    theme.value = "light";
-  }
-};
+
 </script>
 
 <template>
@@ -34,22 +28,22 @@ const toggleTheme = () => {
       <div class="nav">
         <a
             href="#home"
-            :class="{ active: activeSection === 'home' }"
+            :class="{ active: props.activeSection === 'home' }"
             @click.prevent="scrollToSection('home')"
         >主页</a>
         <a
             href="#about"
-            :class="{ active: activeSection === 'about' }"
+            :class="{ active: props.activeSection === 'about' }"
             @click.prevent="scrollToSection('about')"
         >关于</a>
         <a
             href="#skills"
-            :class="{ active: activeSection === 'skills' }"
+            :class="{ active: props.activeSection === 'skills' }"
             @click.prevent="scrollToSection('skills')"
         >技能</a>
         <a
             href="#contact"
-            :class="{ active: activeSection === 'contact' }"
+            :class="{ active: props.activeSection === 'contact' }"
             @click.prevent="scrollToSection('contact')"
         >联系</a>
       </div>
